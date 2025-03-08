@@ -20,9 +20,13 @@
 # will skip chocolatey packages instalation because it's not available, and
 # on the second run it will install the packages.
 
+# NOTE: Before running nvim for the first time, you must install any recent
+# NodeJS LTS version through nvm, as some neovim scripts will need NodeJS
+# to install and configure plugins.
+
 # 🔹 Package Lists
 $wingetPackages = @("Microsoft.WindowsTerminal", "Microsoft.PowerShell")
-$chocoPackages = @("llvm", "fd", "fzf", "ripgrep")
+$chocoPackages = @("llvm", "nvm", "lazygit", "fd", "fzf", "ripgrep", "neovim")
 
 # 🔹 Auto-Elevate: Relaunch as Administrator if not already elevated
 $scriptPath = $MyInvocation.MyCommand.Definition
@@ -45,23 +49,21 @@ $dotfilesProfile = Join-Path $scriptDir "dotfiles\powershell\Microsoft.PowerShel
 $dotfilesTerminalSettings = Join-Path $scriptDir "dotfiles\terminal\settings.json"
 $dotfilesVSCodeSettings = Join-Path $scriptDir "dotfiles\vscode\settings.json"
 $dotfilesWinfetchSettings = Join-Path $scriptDir "dotfiles\winfetch\config.ps1"
+$dotfilesNvimConfig = Join-Path $scriptDir "dotfiles\nvim"
 
-# Define target profile paths for PowerShell 7 and 5
+# Define target paths ========================================================
 $ps7Profile = "$env:USERPROFILE\Documents\PowerShell\Microsoft.PowerShell_profile.ps1"
 $ps5Profile = "$env:USERPROFILE\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1"
+$vscodeSettingsPath = "$env:APPDATA\Code\User\settings.json"
+$winfetchSettingsPath = "$env:USERPROFILE\.config\winfetch\config.ps1"
+$nvimConfigPath = "$env:LOCALAPPDATA\nvim"
 
-# Define target path for Windows Terminal settings
 $terminalSettingsPath = Join-Path $env:LOCALAPPDATA "Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json"
 # Fallback for manually installed Windows Terminal
 if (-Not (Test-Path $terminalSettingsPath)) {
   $terminalSettingsPath = Join-Path $env:LOCALAPPDATA "Microsoft\Windows Terminal\settings.json"
 }
-
-# Define target path for VSCode settings
-$vscodeSettingsPath = "$env:APPDATA\Code\User\settings.json"
-
-# Define target path for Winfetch settings
-$winfetchSettingsPath = "$env:USERPROFILE\.config\winfetch\config.ps1"
+# ============================================================================
 
 # Ensure the source profile exists
 if (-Not (Test-Path $dotfilesProfile)) {
@@ -172,6 +174,7 @@ New-Symlink -target $dotfilesProfile -link $ps5Profile
 New-Symlink -target $dotfilesTerminalSettings -link $terminalSettingsPath
 New-Symlink -target $dotfilesVSCodeSettings -link $vscodeSettingsPath
 New-Symlink -target $dotfilesWinfetchSettings -link $winfetchSettingsPath
+New-Symlink -target $dotfilesNvimConfig -link $nvimConfigPath
 Write-Host "🎉 All symbolic links have been created successfully!" -ForegroundColor Green
 
 if ($isAdmin) {
