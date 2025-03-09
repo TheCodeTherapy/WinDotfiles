@@ -102,35 +102,35 @@ CapsLock & c:: {
 }
 
 CapsLock & Enter:: {
-  if WinExist("PowerShell 7") {
+  if WinExist("Terminal") {
     if GetKeyState("Shift", "P") {
       ; If Shift is pressed, we completely restart the terminal
-      WinClose("PowerShell 7")
+      WinClose("Terminal")
       Loop 50 {
         Sleep 50
-        if !WinExist("PowerShell 7") {
+        if !WinExist("Terminal") {
           break
         }
       }
       Run "wt.exe"
       Loop {
         Sleep 50
-        if WinExist("PowerShell 7") {
-          PositionAndResize("PowerShell 7", 1930, 10, 1900, 1060)
+        if WinExist("Terminal") {
+          PositionAndResize("Terminal", 1930, 10, 1900, 1060)
           break
         }
       }
     } else {
       ; If Shift is not pressed, we just bring the terminal to the front in the correct position
-      PositionAndResize("PowerShell 7", 1930, 10, 1900, 1060)
-      WinActivate("PowerShell 7")
+      PositionAndResize("Terminal", 1930, 10, 1900, 1060)
+      WinActivate("Terminal")
     }
   } else {
     Run "wt.exe"
     Loop {
       Sleep 50
-      if WinExist("PowerShell 7") {
-        PositionAndResize("PowerShell 7", 1930, 10, 1900, 1060)
+      if WinExist("Terminal") {
+        PositionAndResize("Terminal", 1930, 10, 1900, 1060)
         break
       }
     }
