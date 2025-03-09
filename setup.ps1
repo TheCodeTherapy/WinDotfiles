@@ -25,7 +25,7 @@
 # to install and configure plugins.
 
 # 🔹 Package Lists
-$wingetPackages = @("Microsoft.WindowsTerminal", "Microsoft.PowerShell")
+$wingetPackages = @("Microsoft.WindowsTerminal", "Microsoft.PowerShell", "JanDeDobbeleer.OhMyPosh")
 $chocoPackages = @("llvm", "nvm", "lazygit", "fd", "fzf", "ripgrep", "neovim")
 
 # 🔹 Auto-Elevate: Relaunch as Administrator if not already elevated
