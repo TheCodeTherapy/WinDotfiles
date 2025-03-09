@@ -115,9 +115,11 @@ Set-Alias -Name su -Value admin
 Set-Alias -Name sudo -Value admin
 Set-Alias -Name dirs -Value lr
 
-if (Test-Path $winfetchPath) {
-  # & $winfetchPath -Logo "Windows 7" -showpkgs winget,scoop,choco
-  & $winfetchPath -Logo "Windows 7"
+if ($PSVersionTable.PSVersion.Major -ge 7) {
+  if (Test-Path $winfetchPath) {
+    # & $winfetchPath -Logo "Windows 7" -showpkgs winget,scoop,choco
+    & $winfetchPath -Logo "Windows 7"
+  }
 }
 
 # Import the Chocolatey Profile that contains the necessary code to enable
