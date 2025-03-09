@@ -66,8 +66,8 @@ static const float FLICKER_STRENGTH = 0.05;
 static const float FLICKER_FREQUENCY = 15.0;
 
 #define ENABLE_NOISE 1
-static const float NOISE_CONTENT_STRENGTH = 0.15;
-static const float NOISE_UNIFORM_STRENGTH = 0.03;
+static const float NOISE_CONTENT_STRENGTH = 0.120;
+static const float NOISE_UNIFORM_STRENGTH = 0.035;
 
 static const float SHADER_MIX = 0.75;
 
@@ -102,7 +102,6 @@ static const float3 bloom_samples[24] = {
 float2 transformCurve(float2 uv) {
   uv = (uv - 0.5) * 2.0;
   uv.xy *= 1.0 + pow(abs(float2(uv.y, uv.x)) / CURVE, 2.0);
-  uv *= 1.02;
   uv = (uv / 2.0) + 0.5;
   return uv;
 }
