@@ -168,6 +168,12 @@ if ($isAdmin) {
   Install-Chocolatey
 }
 
+$ps5ProfileDir = Split-Path $ps5Profile -Parent
+if (-Not (Test-Path $ps5ProfileDir)) {
+  Write-Host "📁 Creating missing directory: $ps5ProfileDir"
+  New-Item -ItemType Directory -Path $ps5ProfileDir | Out-Null
+}
+
 # Create symlinks for PowerShell 7 and 5
 New-Symlink -target $dotfilesProfile -link $ps7Profile
 New-Symlink -target $dotfilesProfile -link $ps5Profile
