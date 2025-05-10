@@ -30,8 +30,7 @@ function md5 { Get-FileHash -Algorithm MD5 $args }
 function sha1 { Get-FileHash -Algorithm SHA1 $args }
 function sha256 { Get-FileHash -Algorithm SHA256 $args }
 
-function lr
-{
+function lr {
   if ($args.Count -gt 0) {
     Get-ChildItem -Recurse -Include "$args" | ForEach-Object FullName
   }
@@ -40,8 +39,7 @@ function lr
   }
 }
 
-function l
-{
+function l {
   if ($args.Count -gt 0) {
     Get-ChildItem -Include "$args"
   }
@@ -50,8 +48,7 @@ function l
   }
 }
 
-function ll
-{
+function ll {
   if ($args.Count -gt 0) {
     Get-ChildItem -Include "$args" | Format-Table -AutoSize
   }
@@ -60,10 +57,8 @@ function ll
   }
 }
 
-function admin
-{
-  if ($args.Count -gt 0)
-  {
+function admin {
+  if ($args.Count -gt 0) {
     $argList = "& '" + $args + "'"
     Start-Process "$psHome\powershell.exe" -Verb RunAs -ArgumentList $argList
   }
@@ -73,8 +68,9 @@ function admin
 }
 
 function uptime {
-  Get-WmiObject win32_operatingsystem | Select-Object csname, @{LABEL='LastBootUpTime';
-  EXPRESSION={$_.ConverttoDateTime($_.lastbootuptime)}}
+  Get-WmiObject win32_operatingsystem | Select-Object csname, @{LABEL = 'LastBootUpTime';
+    EXPRESSION                                                        = { $_.ConverttoDateTime($_.lastbootuptime) }
+  }
 }
 
 function update-profile {
