@@ -23,6 +23,8 @@
 # NOTE: Before running nvim for the first time, you must install any recent
 # NodeJS LTS version through nvm, as some neovim scripts will need NodeJS
 # to install and configure plugins.
+# NOTE: Run this after the install:
+# Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
 
 # 🔹 Package Lists
 $wingetPackages = @("Microsoft.WindowsTerminal", "Microsoft.PowerShell", "JanDeDobbeleer.OhMyPosh")
