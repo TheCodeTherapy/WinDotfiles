@@ -8,9 +8,10 @@
   "workbench.colorTheme": "Catppuccin Mocha",
   "workbench.iconTheme": "catppuccin-mocha",
 
-  "window.titleBarStyle": "custom",
-  "workbench.activityBar.location": "top",
+  "window.titleBarStyle": "native",
   "window.menuBarVisibility": "toggle",
+
+  "workbench.activityBar.location": "top",
   "explorer.compactFolders": false,
   "breadcrumbs.enabled": false,
   "editor.minimap.enabled": false,
