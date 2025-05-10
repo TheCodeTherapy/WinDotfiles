@@ -1,0 +1,24 @@
+{
+  "recommendations": [
+    "boyswan.glsl-literal",
+    "catppuccin.catppuccin-vsc",
+    "catppuccin.catppuccin-vsc-icons",
+    "dbaeumer.vscode-eslint",
+    "dcasella.i3",
+    "dlasagno.rasi",
+    "esbenp.prettier-vscode",
+    "github.copilot",
+    "github.copilot-chat",
+    "github.vscode-github-actions",
+    "golang.go",
+    "ms-azuretools.vscode-containers",
+    "ms-python.debugpy",
+    "ms-python.python",
+    "ms-python.vscode-pylance",
+    "ms-vscode.powershell",
+    "rust-lang.rust-analyzer",
+    "slevesque.shader",
+    "xaver.clang-format",
+    "ziglang.vscode-zig"
+  ]
+}
