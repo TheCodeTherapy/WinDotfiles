@@ -13,7 +13,6 @@
 
   "workbench.activityBar.location": "top",
   "explorer.compactFolders": false,
-  "breadcrumbs.enabled": false,
   "editor.minimap.enabled": false,
   "editor.renderWhitespace": "none",
   "editor.lightbulb.enabled": "off",
@@ -205,7 +204,6 @@
     "workbench.action.tasks.configureTaskRunner",
     "workbench.action.tasks.runTask"
   ],
-  "C_Cpp.intelliSenseEngine": "disabled",
   "clangd.path": "C:\\Program Files\\LLVM\\bin\\clangd.exe",
   "zig.zls.enabled": "on"
 }
