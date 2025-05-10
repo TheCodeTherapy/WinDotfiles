@@ -83,7 +83,7 @@
       },
       {
         "guid": "{b453ae62-4e3d-5e58-b989-0a998ec441b8}",
-        "hidden": true,
+        "hidden": false,
         "source": "Windows.Terminal.Azure",
         "name": "Azure Cloud Shell",
         "tabTitle": "Azure Cloud Shell",
@@ -91,7 +91,7 @@
       },
       {
         "guid": "{b8bf6013-70bb-5392-a97c-ebb1a4bb1f4a}",
-        "hidden": true,
+        "hidden": false,
         "source": "Windows.Terminal.VisualStudio",
         "name": "Developer Command Prompt for VS 2022",
         "tabTitle": "Developer Command Prompt for VS 2022",
@@ -99,7 +99,7 @@
       },
       {
         "guid": "{109bc624-05f1-5ebf-a600-996989ba0487}",
-        "hidden": true,
+        "hidden": false,
         "source": "Windows.Terminal.VisualStudio",
         "name": "Developer PowerShell for VS 2022",
         "tabTitle": "Developer PowerShell for VS 2022",
