@@ -7,7 +7,7 @@
   "alwaysShowTabs": false,
   "showTabsInTitlebar": true,
   "showTerminalTitleInTitlebar": true,
-  "defaultProfile": "{574e775e-4f2a-5b96-ac1e-a2962a402336}",
+  "useAcrylicInTabRow": true,
   "keybindings": [
     {
       "id": "Terminal.CopyToClipboard",
@@ -27,6 +27,7 @@
       "type": "remainingProfiles"
     }
   ],
+  "defaultProfile": "{574e775e-4f2a-5b96-ac1e-a2962a402336}",
   "profiles": {
     "defaults": {
       "colorScheme": "Catppuccin Mocha",
@@ -43,74 +44,74 @@
       {
         "guid": "{574e775e-4f2a-5b96-ac1e-a2962a402336}",
         "hidden": false,
-        "tabTitle": "Terminal",
-        "suppressApplicationTitle": true,
+        "source": "Windows.Terminal.PowershellCore",
         "name": "PowerShell 7",
-        "source": "Windows.Terminal.PowershellCore"
+        "tabTitle": "PowerShell 7",
+        "suppressApplicationTitle": true
+      },
+      {
+        "guid": "{2ece5bfe-50ed-5f3a-ab87-5cd4baafed2b}",
+        "hidden": false,
+        "source": "Git",
+        "name": "Git Bash",
+        "tabTitle": "Git Bash",
+        "suppressApplicationTitle": true
+      },
+      {
+        "guid": "{5314f37b-d070-54d0-9cfd-0516b8c89d88}",
+        "hidden": false,
+        "source": "Microsoft.WSL",
+        "name": "WSL",
+        "tabTitle": "WSL",
+        "suppressApplicationTitle": true
       },
       {
         "commandline": "%SystemRoot%\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
         "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
         "hidden": false,
-        "tabTitle": "PowerShell 5",
-        "suppressApplicationTitle": true,
-        "name": "PowerShell 5"
-      },
-      {
-        "guid": "{19897cfe-4fe6-5a1f-8bad-c52d191cb1db}",
-        "hidden": false,
-        "name": "WSL2 Ubuntu",
-        "tabTitle": "WSL2 Ubuntu",
-        "suppressApplicationTitle": true,
-        "source": "Microsoft.WSL"
+        "name": "Windows PowerShell",
+        "tabTitle": "Windows PowerShell",
+        "suppressApplicationTitle": true
       },
       {
         "commandline": "%SystemRoot%\\System32\\cmd.exe",
         "guid": "{0caa0dad-35be-5f56-a8ff-afceeeaa6101}",
         "hidden": false,
-        "tabTitle": "Command Prompt",
-        "suppressApplicationTitle": true,
-        "name": "Command Prompt"
+        "name": "CMD",
+        "tabTitle": "CMD",
+        "suppressApplicationTitle": true
       },
       {
         "guid": "{b453ae62-4e3d-5e58-b989-0a998ec441b8}",
-        "hidden": false,
+        "hidden": true,
+        "source": "Windows.Terminal.Azure",
         "name": "Azure Cloud Shell",
         "tabTitle": "Azure Cloud Shell",
-        "suppressApplicationTitle": true,
-        "source": "Windows.Terminal.Azure"
+        "suppressApplicationTitle": true
       },
       {
-        "guid": "{e200d64f-e485-5913-8a06-1ece71f7f774}",
-        "hidden": false,
+        "guid": "{b8bf6013-70bb-5392-a97c-ebb1a4bb1f4a}",
+        "hidden": true,
+        "source": "Windows.Terminal.VisualStudio",
         "name": "Developer Command Prompt for VS 2022",
         "tabTitle": "Developer Command Prompt for VS 2022",
-        "suppressApplicationTitle": true,
-        "source": "Windows.Terminal.VisualStudio"
+        "suppressApplicationTitle": true
       },
       {
-        "guid": "{4e6d3659-08cc-576c-9b5b-fb02b1c57d23}",
-        "hidden": false,
+        "guid": "{109bc624-05f1-5ebf-a600-996989ba0487}",
+        "hidden": true,
+        "source": "Windows.Terminal.VisualStudio",
         "name": "Developer PowerShell for VS 2022",
         "tabTitle": "Developer PowerShell for VS 2022",
-        "suppressApplicationTitle": true,
-        "source": "Windows.Terminal.VisualStudio"
-      },
-      {
-        "guid": "{2ece5bfe-50ed-5f3a-ab87-5cd4baafed2b}",
-        "hidden": false,
-        "name": "Git Bash",
-        "tabTitle": "Git Bash",
-        "suppressApplicationTitle": true,
-        "source": "Git"
+        "suppressApplicationTitle": true
       },
       {
         "guid": "{51855cb2-8cce-5362-8f54-464b92b32386}",
         "hidden": false,
+        "source": "CanonicalGroupLimited.Ubuntu_79rhkp1fndgsc",
         "name": "Ubuntu",
         "tabTitle": "Ubuntu",
-        "suppressApplicationTitle": true,
-        "source": "CanonicalGroupLimited.Ubuntu_79rhkp1fndgsc"
+        "suppressApplicationTitle": true
       }
     ]
   },
@@ -160,6 +161,5 @@
         "useMica": false
       }
     }
-  ],
-  "useAcrylicInTabRow": true
+  ]
 }
