@@ -205,5 +205,8 @@
     "workbench.action.tasks.runTask"
   ],
   "clangd.path": "C:\\Program Files\\LLVM\\bin\\clangd.exe",
-  "zig.zls.enabled": "on"
+  "zig.zls.enabled": "on",
+  "security.allowedUNCHosts": [
+    "wsl.localhost"
+  ]
 }
