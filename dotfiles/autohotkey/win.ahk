@@ -2,12 +2,141 @@
 #SingleInstance force
 SetCapsLockState("AlwaysOff")
 
-global watchCursorEnabled := false
+; ────────────────────────────────────────────────────────────────────────────
+VDA_PATH := A_ScriptDir . "\VirtualDesktopAccessor.dll"
+hVirtualDesktopAccessor := DllCall("LoadLibrary", "Str", VDA_PATH, "Ptr")
+GetDesktopCountProc := DllCall("GetProcAddress", "Ptr", hVirtualDesktopAccessor, "AStr", "GetDesktopCount", "Ptr")
+GoToDesktopNumberProc := DllCall("GetProcAddress", "Ptr", hVirtualDesktopAccessor, "AStr", "GoToDesktopNumber", "Ptr")
+GetCurrentDesktopNumberProc := DllCall("GetProcAddress", "Ptr", hVirtualDesktopAccessor, "AStr", "GetCurrentDesktopNumber", "Ptr")
+IsWindowOnCurrentVirtualDesktopProc := DllCall("GetProcAddress", "Ptr", hVirtualDesktopAccessor, "AStr", "IsWindowOnCurrentVirtualDesktop", "Ptr")
+IsWindowOnDesktopNumberProc := DllCall("GetProcAddress", "Ptr", hVirtualDesktopAccessor, "AStr", "IsWindowOnDesktopNumber", "Ptr")
+MoveWindowToDesktopNumberProc := DllCall("GetProcAddress", "Ptr", hVirtualDesktopAccessor, "AStr", "MoveWindowToDesktopNumber", "Ptr")
+IsPinnedWindowProc := DllCall("GetProcAddress", "Ptr", hVirtualDesktopAccessor, "AStr", "IsPinnedWindow", "Ptr")
+GetDesktopNameProc := DllCall("GetProcAddress", "Ptr", hVirtualDesktopAccessor, "AStr", "GetDesktopName", "Ptr")
+SetDesktopNameProc := DllCall("GetProcAddress", "Ptr", hVirtualDesktopAccessor, "AStr", "SetDesktopName", "Ptr")
+CreateDesktopProc := DllCall("GetProcAddress", "Ptr", hVirtualDesktopAccessor, "AStr", "CreateDesktop", "Ptr")
+RemoveDesktopProc := DllCall("GetProcAddress", "Ptr", hVirtualDesktopAccessor, "AStr", "RemoveDesktop", "Ptr")
 
+; On change listeners
+RegisterPostMessageHookProc := DllCall("GetProcAddress", "Ptr", hVirtualDesktopAccessor, "AStr", "RegisterPostMessageHook", "Ptr")
+UnregisterPostMessageHookProc := DllCall("GetProcAddress", "Ptr", hVirtualDesktopAccessor, "AStr", "UnregisterPostMessageHook", "Ptr")
+
+if !hVirtualDesktopAccessor {
+  MsgBox "Failed to load VirtualDesktopAccessor.dll"
+  ExitApp
+}
+
+if !GetDesktopCountProc {
+  MsgBox "Failed to get pointer to GetDesktopCount"
+  ExitApp
+}
+
+
+GetDesktopCount() {
+  global GetDesktopCountProc
+  count := DllCall(GetDesktopCountProc, "CDECL int")
+  return count
+}
+
+MoveCurrentWindowToDesktop(number) {
+  global MoveWindowToDesktopNumberProc, GoToDesktopNumberProc
+  activeHwnd := WinGetID("A")
+  DllCall(MoveWindowToDesktopNumberProc, "Ptr", activeHwnd, "Int", number, "Int")
+  DllCall(GoToDesktopNumberProc, "Int", number, "Int")
+}
+
+GoToPrevDesktop() {
+  global GetCurrentDesktopNumberProc, GoToDesktopNumberProc
+  current := DllCall(GetCurrentDesktopNumberProc, "Int")
+  last_desktop := GetDesktopCount() - 1
+  ; If current desktop is 0, go to last desktop
+  if (current = 0) {
+    MoveOrGotoDesktopNumber(last_desktop)
+  } else {
+    MoveOrGotoDesktopNumber(current - 1)
+  }
+  return
+}
+
+GoToNextDesktop() {
+  global GetCurrentDesktopNumberProc, GoToDesktopNumberProc
+  current := DllCall(GetCurrentDesktopNumberProc, "Int")
+  last_desktop := GetDesktopCount() - 1
+  ; If current desktop is last, go to first desktop
+  if (current = last_desktop) {
+    MoveOrGotoDesktopNumber(0)
+  } else {
+    MoveOrGotoDesktopNumber(current + 1)
+  }
+  return
+}
+
+GoToDesktopNumber(num) {
+  global GoToDesktopNumberProc
+  DllCall(GoToDesktopNumberProc, "Int", num, "Int")
+  return
+}
+
+MoveOrGotoDesktopNumber(num) {
+  ; If user is holding down Mouse left button, move the current window also
+  if (GetKeyState("LButton")) {
+    MoveCurrentWindowToDesktop(num)
+  } else {
+    GoToDesktopNumber(num)
+  }
+  return
+}
+
+GetDesktopName(num) {
+  global GetDesktopNameProc
+  utf8_buffer := Buffer(1024, 0)
+  ran := DllCall(GetDesktopNameProc, "Int", num, "Ptr", utf8_buffer, "Ptr", utf8_buffer.Size, "Int")
+  name := StrGet(utf8_buffer, 1024, "UTF-8")
+  return name
+}
+
+SetDesktopName(num, name) {
+  global SetDesktopNameProc
+  OutputDebug(name)
+  name_utf8 := Buffer(1024, 0)
+  StrPut(name, name_utf8, "UTF-8")
+  ran := DllCall(SetDesktopNameProc, "Int", num, "Ptr", name_utf8, "Int")
+  return ran
+}
+
+CreateDesktop() {
+  global CreateDesktopProc
+  ran := DllCall(CreateDesktopProc, "Int")
+  return ran
+}
+
+RemoveDesktop(remove_desktop_number, fallback_desktop_number) {
+  global RemoveDesktopProc
+  ran := DllCall(RemoveDesktopProc, "Int", remove_desktop_number, "Int", fallback_desktop_number, "Int")
+  return ran
+}
+
+GetWindowUnderCursor() {
+  MouseGetPos(, , &winId)
+  return winId
+}
+
+MoveWindowUnderCursorToDesktop(desktopNumber) {
+  global MoveWindowToDesktopNumberProc
+  hwnd := GetWindowUnderCursor()
+  if !hwnd {
+    MsgBox "No window under cursor"
+    return
+  }
+  DllCall(MoveWindowToDesktopNumberProc, "Ptr", hwnd, "Int", desktopNumber, "CDECL int")
+}
+; ────────────────────────────────────────────────────────────────────────────
+
+global watchCursorEnabled := false
 global globalMouseX := 0, globalMouseY := 0
 global lastGlobalMouseX := 0, lastGlobalMouseY := 0
+global tipGui := Gui(, "Custom Tooltip")
 
-global tipGui := Gui(, "Custom Tooltip")  
 tipGui.SetFont("s10 cWhite", "Cascadia Mono")
 tipGui.Opt("+AlwaysOnTop +ToolWindow -Caption +Border +OwnDialogs")
 tipGui.BackColor := "Black"
@@ -42,6 +171,8 @@ WatchCursor() {
   global lastGlobalMouseX, lastGlobalMouseY
   static lastId := "", lastX := "", lastY := ""
 
+  local windowPosX, windowPosY, windowWidth, windowHeight
+
   if !watchCursorEnabled {
     CustomToolTip("")  ; Hide tooltip when disabled
     tipGui.Hide()
@@ -50,9 +181,10 @@ WatchCursor() {
 
   ; Get window-relative mouse position
   MouseGetPos &localX, &localY, &id, &control
-
   ; Get absolute mouse position (global across all monitors)
   MouseGetAbsPos(&globalMouseX, &globalMouseY)
+  ; Get the window's position and size
+  WinGetPos(&windowPosX, &windowPosY, &windowWidth, &windowHeight, id)
 
   ; Avoid redundant updates to reduce stutter
   if (id = lastId && localX = lastX && localY = lastY) {
@@ -72,6 +204,8 @@ WatchCursor() {
     "ahk_id           : " id "`n"
     "ahk_class        : " WinGetClass(id) "`n"
     "Control          : " control "`n"
+    "Window position  : " windowPosX ", " windowPosY "`n"
+    "Window size      : " windowWidth ", " windowHeight "`n"
     "Local mouse pos  : " localX ", " localY "`n"
     "Global mouse pos : " globalMouseX ", " globalMouseY "`n",
     10, 10  ; Fixed tooltip position
@@ -81,8 +215,8 @@ WatchCursor() {
 PositionAndResize(winTitle, posX, posY, sizeX, sizeY) {
   hwnd := WinExist(winTitle)  ; Get the window handle (HWND)
   if !hwnd {
-      MsgBox "Error: Window not found!"
-      return
+    MsgBox "Error: Window not found!"
+    return
   }
 
   ; Move and resize the window
@@ -102,35 +236,33 @@ CapsLock & c:: {
 }
 
 CapsLock & Enter:: {
-  if WinExist("Terminal") {
+  if WinExist("PowerShell 7") {
     if GetKeyState("Shift", "P") {
-      ; If Shift is pressed, we completely restart the terminal
-      WinClose("Terminal")
-      Loop 50 {
+      WinClose("PowerShell 7")
+      loop 50 {
         Sleep 50
-        if !WinExist("Terminal") {
+        if !WinExist("PowerShell 7") {
           break
         }
       }
       Run "wt.exe"
-      Loop {
+      loop {
         Sleep 50
-        if WinExist("Terminal") {
-          PositionAndResize("Terminal", 1930, 10, 1900, 1060)
+        if WinExist("PowerShell 7") {
+          PositionAndResize("PowerShell 7", 3546, 11, 1570, 1395)
           break
         }
       }
     } else {
-      ; If Shift is not pressed, we just bring the terminal to the front in the correct position
-      PositionAndResize("Terminal", 1930, 10, 1900, 1060)
-      WinActivate("Terminal")
+      PositionAndResize("PowerShell 7", 3546, 11, 1570, 1395)
+      WinActivate("PowerShell 7")
     }
   } else {
     Run "wt.exe"
-    Loop {
+    loop {
       Sleep 50
-      if WinExist("Terminal") {
-        PositionAndResize("Terminal", 1930, 10, 1900, 1060)
+      if WinExist("PowerShell 7") {
+        PositionAndResize("PowerShell 7", 3546, 11, 1570, 1395)
         break
       }
     }
@@ -155,6 +287,33 @@ CapsLock & Enter:: {
   Send "{Up}"
 }
 
+; create 4 virtual desktops if they still don't exist
+if (GetDesktopCount() < 4) {
+  Loop 4 {
+    if (A_Index > GetDesktopCount()) {
+      MsgBox "Current desktop count: " GetDesktopCount() "`nCreating desktop " A_Index
+      CreateDesktop()
+    }
+  }
+}
+
+#1::GoToDesktopNumber(0)
+#2::GoToDesktopNumber(1)
+#3::GoToDesktopNumber(2)
+#4::GoToDesktopNumber(3)
+
+#+1::MoveWindowUnderCursorToDesktop(0)
+#+2::MoveWindowUnderCursorToDesktop(1)
+#+3::MoveWindowUnderCursorToDesktop(2)
+#+4::MoveWindowUnderCursorToDesktop(3)
+
+; print desktop count with Win + 5 for testing purposes
+#5::
+{
+  count := GetDesktopCount()
+  MsgBox "Desktop count: " count
+}
+
 ;; ┌─────────────────────────────────────────────────────────────────────────┐
 ;; │ Quick strings                                                           │
 ;; └─────────────────────────────────────────────────────────────────────────┘
@@ -166,43 +325,46 @@ CapsLock & Enter:: {
 {
     ;; do nothing
 }
-:*?:h'::ä
-:*?:h;::ö
-:*?:;...::…
-:*?:;ae::≈
-:*?:;ao::å
-:*?:;b::•
-:*?:;copy::©
-:*?:;da::↓
-:*?:;deg::°
-:*?:;dis::ಠ_ಠ
-:*?:;es::☆
+
 :*?:;eur::€
 :*?:;gbp::£
-:*?:;fs::★
-:*?:;half::½
-:*?:;la::←
-:*?:;lenny::( ͡° ͜ʖ ͡°)
-:*?:;md::—
-:*?:;mid::·
-:*?:;nb::  ;; non-breaking space
-:*?:;nd::–
-:*?:;ne::≠
-:*?:;pm::±
-:*?:;ra::→
-:*?:;reg::®
-:*?:;shrug::¯\(ツ)/¯
-:*?:;sup0::⁰
-:*?:;sup1::¹
-:*?:;sup2::²
-:*?:;sup3::³
-:*?:;sup4::⁴
-:*?:;sup5::⁵
-:*?:;sup6::⁶
-:*?:;sup7::⁷
-:*?:;sup8::⁸
-:*?:;sup9::⁹
 :*?:;tm::™
-:*?:;ua::↑
-:*?:;x::×
+:*?:;shrug::¯\(ツ)/¯
+:*?:;lenny::( ͡° ͜ʖ ͡°)
+:*?:;reg::®
+
+; :*?:h'::ä
+; :*?:h;::ö
+; :*?:;...::…
+; :*?:;ae::≈
+; :*?:;ao::å
+; :*?:;b::•
+; :*?:;copy::©
+; :*?:;da::↓
+; :*?:;deg::°
+; :*?:;dis::ಠ_ಠ
+; :*?:;es::☆
+; :*?:;fs::★
+; :*?:;half::½
+; :*?:;la::←
+; :*?:;md::—
+; :*?:;mid::·
+; :*?:;nb::  ;; non-breaking space
+; :*?:;nd::–
+; :*?:;ne::≠
+; :*?:;pm::±
+; :*?:;ra::→
+; :*?:;sup0::⁰
+; :*?:;sup1::¹
+; :*?:;sup2::²
+; :*?:;sup3::³
+; :*?:;sup4::⁴
+; :*?:;sup5::⁵
+; :*?:;sup6::⁶
+; :*?:;sup7::⁷
+; :*?:;sup8::⁸
+; :*?:;sup9::⁹
+; :*?:;ua::↑
+; :*?:;x::×
+
 ;; ───────────────────────────────────────────────────────────────────────────
