@@ -1,165 +1,168 @@
 {
-  "$help": "https://aka.ms/terminal-documentation",
-  "$schema": "https://aka.ms/terminal-profiles-schema",
-  "actions": [],
-  "copyFormatting": "none",
-  "copyOnSelect": false,
-  "alwaysShowTabs": false,
-  "showTabsInTitlebar": true,
-  "showTerminalTitleInTitlebar": true,
-  "useAcrylicInTabRow": true,
-  "keybindings": [
+    "$help": "https://aka.ms/terminal-documentation",
+    "$schema": "https://aka.ms/terminal-profiles-schema",
+    "actions": [],
+    "alwaysShowTabs": false,
+    "copyFormatting": "none",
+    "copyOnSelect": false,
+    "defaultProfile": "{574e775e-4f2a-5b96-ac1e-a2962a402336}",
+    "keybindings": 
+    [
+        {
+            "id": "Terminal.CopyToClipboard",
+            "keys": "ctrl+c"
+        },
+        {
+            "id": "Terminal.PasteFromClipboard",
+            "keys": "ctrl+v"
+        },
+        {
+            "id": "Terminal.DuplicatePaneAuto",
+            "keys": "alt+shift+d"
+        }
+    ],
+    "newTabMenu": 
+    [
+        {
+            "type": "remainingProfiles"
+        }
+    ],
+    "profiles": 
     {
-      "id": "Terminal.CopyToClipboard",
-      "keys": "ctrl+c"
+        "defaults": 
+        {
+            "colorScheme": "Catppuccin Mocha",
+            "experimental.pixelShaderPath": "C:\\Users\\marcogomez\\WinDotfiles\\dotfiles\\terminal\\crt.hlsl",
+            "font": 
+            {
+                "face": "JetBrainsMono Nerd Font Mono",
+                "size": 14
+            },
+            "opacity": 70,
+            "scrollbarState": "hidden",
+            "useAcrylic": true
+        },
+        "list": 
+        [
+            {
+                "guid": "{574e775e-4f2a-5b96-ac1e-a2962a402336}",
+                "hidden": false,
+                "name": "PowerShell 7",
+                "source": "Windows.Terminal.PowershellCore",
+                "suppressApplicationTitle": true,
+                "tabTitle": "PowerShell 7"
+            },
+            {
+                "guid": "{2ece5bfe-50ed-5f3a-ab87-5cd4baafed2b}",
+                "hidden": false,
+                "name": "Git Bash",
+                "source": "Git",
+                "suppressApplicationTitle": true,
+                "tabTitle": "Git Bash"
+            },
+            {
+                "guid": "{16b207f8-26d3-57fe-ba07-d1af3e6d9ffa}",
+                "hidden": false,
+                "source": "Microsoft.WSL",
+                "name": "WSL",
+                "tabTitle": "WSL",
+                "suppressApplicationTitle": true
+            },
+            {
+                "commandline": "%SystemRoot%\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+                "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
+                "hidden": false,
+                "name": "Windows PowerShell",
+                "suppressApplicationTitle": true,
+                "tabTitle": "Windows PowerShell"
+            },
+            {
+                "commandline": "%SystemRoot%\\System32\\cmd.exe",
+                "guid": "{0caa0dad-35be-5f56-a8ff-afceeeaa6101}",
+                "hidden": false,
+                "name": "CMD",
+                "suppressApplicationTitle": true,
+                "tabTitle": "CMD"
+            },
+            {
+                "guid": "{b453ae62-4e3d-5e58-b989-0a998ec441b8}",
+                "hidden": false,
+                "name": "Azure Cloud Shell",
+                "source": "Windows.Terminal.Azure",
+                "suppressApplicationTitle": true,
+                "tabTitle": "Azure Cloud Shell"
+            },
+            {
+                "guid": "{111b8063-23f0-5890-a015-cb3157ae510a}",
+                "hidden": false,
+                "name": "Developer Command Prompt for VS 2022",
+                "source": "Windows.Terminal.VisualStudio",
+                "suppressApplicationTitle": true,
+                "tabTitle": "Developer Command Prompt for VS 2022"
+            },
+            {
+                "guid": "{7e274967-e5c7-529d-b1e6-0c9b6dd3d1aa}",
+                "hidden": false,
+                "name": "Developer PowerShell for VS 2022",
+                "source": "Windows.Terminal.VisualStudio",
+                "suppressApplicationTitle": true,
+                "tabTitle": "Developer PowerShell for VS 2022"
+            }
+        ]
     },
-    {
-      "id": "Terminal.PasteFromClipboard",
-      "keys": "ctrl+v"
-    },
-    {
-      "id": "Terminal.DuplicatePaneAuto",
-      "keys": "alt+shift+d"
-    }
-  ],
-  "newTabMenu": [
-    {
-      "type": "remainingProfiles"
-    }
-  ],
-  "defaultProfile": "{574e775e-4f2a-5b96-ac1e-a2962a402336}",
-  "profiles": {
-    "defaults": {
-      "colorScheme": "Catppuccin Mocha",
-      "experimental.pixelShaderPath": "C:\\Users\\marcogomez\\WinDotfiles\\dotfiles\\terminal\\crt.hlsl",
-      "font": {
-        "face": "JetBrainsMono Nerd Font Mono",
-        "size": 14
-      },
-      "opacity": 91,
-      "scrollbarState": "hidden",
-      "useAcrylic": true
-    },
-    "list": [
-      {
-        "guid": "{574e775e-4f2a-5b96-ac1e-a2962a402336}",
-        "hidden": false,
-        "source": "Windows.Terminal.PowershellCore",
-        "name": "PowerShell 7",
-        "tabTitle": "PowerShell 7",
-        "suppressApplicationTitle": true
-      },
-      {
-        "guid": "{2ece5bfe-50ed-5f3a-ab87-5cd4baafed2b}",
-        "hidden": false,
-        "source": "Git",
-        "name": "Git Bash",
-        "tabTitle": "Git Bash",
-        "suppressApplicationTitle": true
-      },
-      {
-        "guid": "{5314f37b-d070-54d0-9cfd-0516b8c89d88}",
-        "hidden": false,
-        "source": "Microsoft.WSL",
-        "name": "WSL",
-        "tabTitle": "WSL",
-        "suppressApplicationTitle": true
-      },
-      {
-        "commandline": "%SystemRoot%\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
-        "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
-        "hidden": false,
-        "name": "Windows PowerShell",
-        "tabTitle": "Windows PowerShell",
-        "suppressApplicationTitle": true
-      },
-      {
-        "commandline": "%SystemRoot%\\System32\\cmd.exe",
-        "guid": "{0caa0dad-35be-5f56-a8ff-afceeeaa6101}",
-        "hidden": false,
-        "name": "CMD",
-        "tabTitle": "CMD",
-        "suppressApplicationTitle": true
-      },
-      {
-        "guid": "{b453ae62-4e3d-5e58-b989-0a998ec441b8}",
-        "hidden": false,
-        "source": "Windows.Terminal.Azure",
-        "name": "Azure Cloud Shell",
-        "tabTitle": "Azure Cloud Shell",
-        "suppressApplicationTitle": true
-      },
-      {
-        "guid": "{b8bf6013-70bb-5392-a97c-ebb1a4bb1f4a}",
-        "hidden": false,
-        "source": "Windows.Terminal.VisualStudio",
-        "name": "Developer Command Prompt for VS 2022",
-        "tabTitle": "Developer Command Prompt for VS 2022",
-        "suppressApplicationTitle": true
-      },
-      {
-        "guid": "{109bc624-05f1-5ebf-a600-996989ba0487}",
-        "hidden": false,
-        "source": "Windows.Terminal.VisualStudio",
-        "name": "Developer PowerShell for VS 2022",
-        "tabTitle": "Developer PowerShell for VS 2022",
-        "suppressApplicationTitle": true
-      },
-      {
-        "guid": "{51855cb2-8cce-5362-8f54-464b92b32386}",
-        "hidden": false,
-        "source": "CanonicalGroupLimited.Ubuntu_79rhkp1fndgsc",
-        "name": "Ubuntu",
-        "tabTitle": "Ubuntu",
-        "suppressApplicationTitle": true
-      }
-    ]
-  },
-  "schemes": [
-    {
-      "background": "#1E1E2E",
-      "black": "#45475A",
-      "blue": "#89B4FA",
-      "brightBlack": "#585B70",
-      "brightBlue": "#89B4FA",
-      "brightCyan": "#94E2D5",
-      "brightGreen": "#A6E3A1",
-      "brightPurple": "#F5C2E7",
-      "brightRed": "#F38BA8",
-      "brightWhite": "#A6ADC8",
-      "brightYellow": "#F9E2AF",
-      "cursorColor": "#F5E0DC",
-      "cyan": "#94E2D5",
-      "foreground": "#CDD6F4",
-      "green": "#A6E3A1",
-      "name": "Catppuccin Mocha",
-      "purple": "#F5C2E7",
-      "red": "#F38BA8",
-      "selectionBackground": "#585B90",
-      "white": "#BAC2DE",
-      "yellow": "#F9E2AF"
-    }
-  ],
-  "themes": [
-    {
-      "name": "Catppuccin Mocha",
-      "tab": {
-        "background": "#1E1E2EFF",
-        "iconStyle": "default",
-        "showCloseButton": "always",
-        "unfocusedBackground": null
-      },
-      "tabRow": {
-        "background": "#181825FF",
-        "unfocusedBackground": "#11111BFF"
-      },
-      "window": {
-        "applicationTheme": "dark",
-        "experimental.rainbowFrame": false,
-        "frame": null,
-        "unfocusedFrame": null,
-        "useMica": false
-      }
-    }
-  ]
+    "schemes": 
+    [
+        {
+            "background": "#1E1E2E",
+            "black": "#45475A",
+            "blue": "#89B4FA",
+            "brightBlack": "#585B70",
+            "brightBlue": "#89B4FA",
+            "brightCyan": "#94E2D5",
+            "brightGreen": "#A6E3A1",
+            "brightPurple": "#F5C2E7",
+            "brightRed": "#F38BA8",
+            "brightWhite": "#A6ADC8",
+            "brightYellow": "#F9E2AF",
+            "cursorColor": "#F5E0DC",
+            "cyan": "#94E2D5",
+            "foreground": "#CDD6F4",
+            "green": "#A6E3A1",
+            "name": "Catppuccin Mocha",
+            "purple": "#F5C2E7",
+            "red": "#F38BA8",
+            "selectionBackground": "#585B90",
+            "white": "#BAC2DE",
+            "yellow": "#F9E2AF"
+        }
+    ],
+    "showTabsInTitlebar": true,
+    "showTerminalTitleInTitlebar": true,
+    "themes": 
+    [
+        {
+            "name": "Catppuccin Mocha",
+            "tab": 
+            {
+                "background": "#1E1E2EFF",
+                "iconStyle": "default",
+                "showCloseButton": "always",
+                "unfocusedBackground": null
+            },
+            "tabRow": 
+            {
+                "background": "#181825FF",
+                "unfocusedBackground": "#11111BFF"
+            },
+            "window": 
+            {
+                "applicationTheme": "dark",
+                "experimental.rainbowFrame": false,
+                "frame": null,
+                "unfocusedFrame": null,
+                "useMica": false
+            }
+        }
+    ],
+    "useAcrylicInTabRow": true
 }
