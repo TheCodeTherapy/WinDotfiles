@@ -93,7 +93,8 @@ function New-Symlink {
   # Verify creation
   if (Test-Path $link) {
     Write-Host "✅ Symlink created successfully: $link -> $(Get-Item $link).Target"
-  } else {
+  }
+  else {
     Write-Host "❌ Failed to create symlink: $link" -ForegroundColor Red
   }
 }
@@ -111,7 +112,8 @@ function Install-Chocolatey {
     Set-ExecutionPolicy Bypass -Scope Process -Force
     [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072
     Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
-  } else {
+  }
+  else {
     Write-Host "✅ Chocolatey is already installed."
   }
 }
@@ -128,7 +130,8 @@ function Install-Chocolatey-Packages {
     if ($installed) {
       Write-Host "✅ $package is already installed. Checking for updates..."
       choco upgrade $package -y
-    } else {
+    }
+    else {
       Write-Host "📦 Installing $package..."
       choco install $package -y
     }
@@ -147,7 +150,8 @@ function Install-Winget-Packages {
     if ($installed -match $package) {
       Write-Host "✅ $package is already installed. Checking for updates..."
       winget upgrade --id $package --exact --silent --accept-source-agreements
-    } else {
+    }
+    else {
       Write-Host "📦 Installing $package..."
       winget install --id $package --exact --silent --accept-source-agreements
     }
