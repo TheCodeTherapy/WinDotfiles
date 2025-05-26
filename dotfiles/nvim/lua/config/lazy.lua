@@ -14,6 +14,9 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+-- vim.cmd([[let &shell = '"C:/Program Files/Git/bin/bash.exe"']])
+-- vim.cmd([[let &shellcmdflag = '-s']])
+
 require("lazy").setup({
   spec = {
     -- add LazyVim and import its plugins
