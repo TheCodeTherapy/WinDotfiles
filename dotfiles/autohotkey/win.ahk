@@ -3,14 +3,18 @@
 SetCapsLockState("AlwaysOff")
 
 ; ────────────────────────────────────────────────────────────────────────────
-VDA_PATH := A_ScriptDir . "\VirtualDesktopAccessor.dll"
+VDA_PATH := A_ScriptDir . "\VirtualDesktopAccessorW11.dll"
 hVirtualDesktopAccessor := DllCall("LoadLibrary", "Str", VDA_PATH, "Ptr")
 GetDesktopCountProc := DllCall("GetProcAddress", "Ptr", hVirtualDesktopAccessor, "AStr", "GetDesktopCount", "Ptr")
 GoToDesktopNumberProc := DllCall("GetProcAddress", "Ptr", hVirtualDesktopAccessor, "AStr", "GoToDesktopNumber", "Ptr")
-GetCurrentDesktopNumberProc := DllCall("GetProcAddress", "Ptr", hVirtualDesktopAccessor, "AStr", "GetCurrentDesktopNumber", "Ptr")
-IsWindowOnCurrentVirtualDesktopProc := DllCall("GetProcAddress", "Ptr", hVirtualDesktopAccessor, "AStr", "IsWindowOnCurrentVirtualDesktop", "Ptr")
-IsWindowOnDesktopNumberProc := DllCall("GetProcAddress", "Ptr", hVirtualDesktopAccessor, "AStr", "IsWindowOnDesktopNumber", "Ptr")
-MoveWindowToDesktopNumberProc := DllCall("GetProcAddress", "Ptr", hVirtualDesktopAccessor, "AStr", "MoveWindowToDesktopNumber", "Ptr")
+GetCurrentDesktopNumberProc := DllCall("GetProcAddress", "Ptr", hVirtualDesktopAccessor, "AStr",
+    "GetCurrentDesktopNumber", "Ptr")
+IsWindowOnCurrentVirtualDesktopProc := DllCall("GetProcAddress", "Ptr", hVirtualDesktopAccessor, "AStr",
+    "IsWindowOnCurrentVirtualDesktop", "Ptr")
+IsWindowOnDesktopNumberProc := DllCall("GetProcAddress", "Ptr", hVirtualDesktopAccessor, "AStr",
+    "IsWindowOnDesktopNumber", "Ptr")
+MoveWindowToDesktopNumberProc := DllCall("GetProcAddress", "Ptr", hVirtualDesktopAccessor, "AStr",
+    "MoveWindowToDesktopNumber", "Ptr")
 IsPinnedWindowProc := DllCall("GetProcAddress", "Ptr", hVirtualDesktopAccessor, "AStr", "IsPinnedWindow", "Ptr")
 GetDesktopNameProc := DllCall("GetProcAddress", "Ptr", hVirtualDesktopAccessor, "AStr", "GetDesktopName", "Ptr")
 SetDesktopNameProc := DllCall("GetProcAddress", "Ptr", hVirtualDesktopAccessor, "AStr", "SetDesktopName", "Ptr")
@@ -18,117 +22,136 @@ CreateDesktopProc := DllCall("GetProcAddress", "Ptr", hVirtualDesktopAccessor, "
 RemoveDesktopProc := DllCall("GetProcAddress", "Ptr", hVirtualDesktopAccessor, "AStr", "RemoveDesktop", "Ptr")
 
 ; On change listeners
-RegisterPostMessageHookProc := DllCall("GetProcAddress", "Ptr", hVirtualDesktopAccessor, "AStr", "RegisterPostMessageHook", "Ptr")
-UnregisterPostMessageHookProc := DllCall("GetProcAddress", "Ptr", hVirtualDesktopAccessor, "AStr", "UnregisterPostMessageHook", "Ptr")
+RegisterPostMessageHookProc := DllCall("GetProcAddress", "Ptr", hVirtualDesktopAccessor, "AStr",
+    "RegisterPostMessageHook", "Ptr")
+UnregisterPostMessageHookProc := DllCall("GetProcAddress", "Ptr", hVirtualDesktopAccessor, "AStr",
+    "UnregisterPostMessageHook", "Ptr")
 
 if !hVirtualDesktopAccessor {
-  MsgBox "Failed to load VirtualDesktopAccessor.dll"
-  ExitApp
+    MsgBox "Failed to load VirtualDesktopAccessor.dll"
+    ExitApp
 }
 
 if !GetDesktopCountProc {
-  MsgBox "Failed to get pointer to GetDesktopCount"
-  ExitApp
+    MsgBox "Failed to get pointer to GetDesktopCount"
+    ExitApp
 }
 
-
 GetDesktopCount() {
-  global GetDesktopCountProc
-  count := DllCall(GetDesktopCountProc, "CDECL int")
-  return count
+    global GetDesktopCountProc
+    count := DllCall(GetDesktopCountProc, "CDECL int")
+    return count
 }
 
 MoveCurrentWindowToDesktop(number) {
-  global MoveWindowToDesktopNumberProc, GoToDesktopNumberProc
-  activeHwnd := WinGetID("A")
-  DllCall(MoveWindowToDesktopNumberProc, "Ptr", activeHwnd, "Int", number, "Int")
-  DllCall(GoToDesktopNumberProc, "Int", number, "Int")
+    global MoveWindowToDesktopNumberProc, GoToDesktopNumberProc
+    activeHwnd := WinGetID("A")
+    DllCall(MoveWindowToDesktopNumberProc, "Ptr", activeHwnd, "Int", number, "Int")
+    DllCall(GoToDesktopNumberProc, "Int", number, "Int")
 }
 
 GoToPrevDesktop() {
-  global GetCurrentDesktopNumberProc, GoToDesktopNumberProc
-  current := DllCall(GetCurrentDesktopNumberProc, "Int")
-  last_desktop := GetDesktopCount() - 1
-  ; If current desktop is 0, go to last desktop
-  if (current = 0) {
-    MoveOrGotoDesktopNumber(last_desktop)
-  } else {
-    MoveOrGotoDesktopNumber(current - 1)
-  }
-  return
+    global GetCurrentDesktopNumberProc, GoToDesktopNumberProc
+    current := DllCall(GetCurrentDesktopNumberProc, "Int")
+    last_desktop := GetDesktopCount() - 1
+    ; If current desktop is 0, go to last desktop
+    if (current = 0) {
+        MoveOrGotoDesktopNumber(last_desktop)
+    } else {
+        MoveOrGotoDesktopNumber(current - 1)
+    }
+    return
 }
 
 GoToNextDesktop() {
-  global GetCurrentDesktopNumberProc, GoToDesktopNumberProc
-  current := DllCall(GetCurrentDesktopNumberProc, "Int")
-  last_desktop := GetDesktopCount() - 1
-  ; If current desktop is last, go to first desktop
-  if (current = last_desktop) {
-    MoveOrGotoDesktopNumber(0)
-  } else {
-    MoveOrGotoDesktopNumber(current + 1)
-  }
-  return
+    global GetCurrentDesktopNumberProc, GoToDesktopNumberProc
+    current := DllCall(GetCurrentDesktopNumberProc, "Int")
+    last_desktop := GetDesktopCount() - 1
+    ; If current desktop is last, go to first desktop
+    if (current = last_desktop) {
+        MoveOrGotoDesktopNumber(0)
+    } else {
+        MoveOrGotoDesktopNumber(current + 1)
+    }
+    return
 }
 
 GoToDesktopNumber(num) {
-  global GoToDesktopNumberProc
-  DllCall(GoToDesktopNumberProc, "Int", num, "Int")
-  return
+    global GoToDesktopNumberProc
+    DllCall(GoToDesktopNumberProc, "Int", num, "Int")
+    return
 }
 
 MoveOrGotoDesktopNumber(num) {
-  ; If user is holding down Mouse left button, move the current window also
-  if (GetKeyState("LButton")) {
-    MoveCurrentWindowToDesktop(num)
-  } else {
-    GoToDesktopNumber(num)
-  }
-  return
+    ; If user is holding down Mouse left button, move the current window also
+    if (GetKeyState("LButton")) {
+        MoveCurrentWindowToDesktop(num)
+    } else {
+        GoToDesktopNumber(num)
+    }
+    return
 }
 
 GetDesktopName(num) {
-  global GetDesktopNameProc
-  utf8_buffer := Buffer(1024, 0)
-  ran := DllCall(GetDesktopNameProc, "Int", num, "Ptr", utf8_buffer, "Ptr", utf8_buffer.Size, "Int")
-  name := StrGet(utf8_buffer, 1024, "UTF-8")
-  return name
+    global GetDesktopNameProc
+    utf8_buffer := Buffer(1024, 0)
+    ran := DllCall(GetDesktopNameProc, "Int", num, "Ptr", utf8_buffer, "Ptr", utf8_buffer.Size, "Int")
+    name := StrGet(utf8_buffer, 1024, "UTF-8")
+    return name
 }
 
 SetDesktopName(num, name) {
-  global SetDesktopNameProc
-  OutputDebug(name)
-  name_utf8 := Buffer(1024, 0)
-  StrPut(name, name_utf8, "UTF-8")
-  ran := DllCall(SetDesktopNameProc, "Int", num, "Ptr", name_utf8, "Int")
-  return ran
+    global SetDesktopNameProc
+    OutputDebug(name)
+    name_utf8 := Buffer(1024, 0)
+    StrPut(name, name_utf8, "UTF-8")
+    ran := DllCall(SetDesktopNameProc, "Int", num, "Ptr", name_utf8, "Int")
+    return ran
 }
 
 CreateDesktop() {
-  global CreateDesktopProc
-  ran := DllCall(CreateDesktopProc, "Int")
-  return ran
+    global CreateDesktopProc
+    ran := DllCall(CreateDesktopProc, "Int")
+    return ran
 }
 
 RemoveDesktop(remove_desktop_number, fallback_desktop_number) {
-  global RemoveDesktopProc
-  ran := DllCall(RemoveDesktopProc, "Int", remove_desktop_number, "Int", fallback_desktop_number, "Int")
-  return ran
+    global RemoveDesktopProc
+    ran := DllCall(RemoveDesktopProc, "Int", remove_desktop_number, "Int", fallback_desktop_number, "Int")
+    return ran
 }
 
 GetWindowUnderCursor() {
-  MouseGetPos(, , &winId)
-  return winId
+    MouseGetPos(, , &winId)
+    return winId
+}
+
+GetWindowWidth(hwnd) {
+    if !hwnd {
+        MsgBox "Error: Window handle is not valid!"
+        return
+    }
+    WinGetPos(&x, &y, &w, &h, hwnd)
+    return w
+}
+
+GetWindowHeight(hwnd) {
+    if !hwnd {
+        MsgBox "Error: Window handle is not valid!"
+        return
+    }
+    WinGetPos(&x, &y, &w, &h, hwnd)
+    return h
 }
 
 MoveWindowUnderCursorToDesktop(desktopNumber) {
-  global MoveWindowToDesktopNumberProc
-  hwnd := GetWindowUnderCursor()
-  if !hwnd {
-    MsgBox "No window under cursor"
-    return
-  }
-  DllCall(MoveWindowToDesktopNumberProc, "Ptr", hwnd, "Int", desktopNumber, "CDECL int")
+    global MoveWindowToDesktopNumberProc
+    hwnd := GetWindowUnderCursor()
+    if !hwnd {
+        MsgBox "No window under cursor"
+        return
+    }
+    DllCall(MoveWindowToDesktopNumberProc, "Ptr", hwnd, "Int", desktopNumber, "CDECL int")
 }
 ; ────────────────────────────────────────────────────────────────────────────
 
@@ -148,170 +171,195 @@ SetTimer WatchCursor, 150, 0 ; Start the timer
 
 ; Windows API function to get ABSOLUTE global coordinates
 MouseGetAbsPos(&x, &y) {
-  pt := Buffer(8)  ; Allocate an 8-byte buffer for POINT struct (X and Y)
-  DllCall("GetCursorPos", "Ptr", pt)  ; Call Windows API to get absolute cursor position
-  x := NumGet(pt, 0, "Int")  ; Extract X coordinate (first 4 bytes)
-  y := NumGet(pt, 4, "Int")  ; Extract Y coordinate (next 4 bytes)
+    pt := Buffer(8)  ; Allocate an 8-byte buffer for POINT struct (X and Y)
+    DllCall("GetCursorPos", "Ptr", pt)  ; Call Windows API to get absolute cursor position
+    x := NumGet(pt, 0, "Int")  ; Extract X coordinate (first 4 bytes)
+    y := NumGet(pt, 4, "Int")  ; Extract Y coordinate (next 4 bytes)
 }
 
 CustomToolTip(text, x := 10, y := 10) {
-  global tipGui, tipText
-  if text = "" {
-    tipGui.Hide()
-    return
-  }
-  tipText.Text := text
-  tipGui.Show("NoActivate AutoSize x" x " y" y)
+    global tipGui, tipText
+    if text = "" {
+        tipGui.Hide()
+        return
+    }
+    tipText.Text := text
+    tipGui.Show("NoActivate AutoSize x" x " y" y)
+}
+
+MakeWindow16x9ByWidth(hwnd, width) {
+    if !hwnd {
+        MsgBox "Error: Window handle is not valid!"
+        return
+    }
+    WinGetPos(&x, &y, &w, &h, hwnd)
+    newHeight := Round(width * 9 / 16)
+    DllCall("MoveWindow", "Ptr", hwnd, "Int", x, "Int", y, "Int", width, "Int", newHeight, "Int", true)
+}
+
+MakeWindow16x9ByHeight(hwnd, height) {
+    if !hwnd {
+        MsgBox "Error: Window handle is not valid!"
+        return
+    }
+    WinGetPos(&x, &y, &w, &h, hwnd)
+    newWidth := Round(height * 16 / 9)
+    DllCall("MoveWindow", "Ptr", hwnd, "Int", x, "Int", y, "Int", newWidth, "Int", height, "Int", true)
 }
 
 WatchCursor() {
-  global tipGui
-  global watchCursorEnabled
-  global globalMouseX, globalMouseY
-  global lastGlobalMouseX, lastGlobalMouseY
-  static lastId := "", lastX := "", lastY := ""
+    global tipGui
+    global watchCursorEnabled
+    global globalMouseX, globalMouseY
+    global lastGlobalMouseX, lastGlobalMouseY
+    static lastId := "", lastX := "", lastY := ""
 
-  local windowPosX, windowPosY, windowWidth, windowHeight
+    local windowPosX, windowPosY, windowWidth, windowHeight
 
-  if !watchCursorEnabled {
-    CustomToolTip("")  ; Hide tooltip when disabled
-    tipGui.Hide()
-    return
-  }
+    if !watchCursorEnabled {
+        CustomToolTip("")  ; Hide tooltip when disabled
+        tipGui.Hide()
+        return
+    }
 
-  ; Get window-relative mouse position
-  MouseGetPos &localX, &localY, &id, &control
-  ; Get absolute mouse position (global across all monitors)
-  MouseGetAbsPos(&globalMouseX, &globalMouseY)
-  ; Get the window's position and size
-  WinGetPos(&windowPosX, &windowPosY, &windowWidth, &windowHeight, id)
+    ; Get window-relative mouse position
+    MouseGetPos &localX, &localY, &id, &control
+    ; Get absolute mouse position (global across all monitors)
+    MouseGetAbsPos(&globalMouseX, &globalMouseY)
+    ; Get the window's position and size
+    WinGetPos(&windowPosX, &windowPosY, &windowWidth, &windowHeight, id)
 
-  ; Avoid redundant updates to reduce stutter
-  if (id = lastId && localX = lastX && localY = lastY) {
-    return
-  }
+    local windowAspectRatio := windowWidth / windowHeight
 
-  if (lastGlobalMouseX = globalMouseX && lastGlobalMouseY = globalMouseY) {
-    return
-  }
+    ; Avoid redundant updates to reduce stutter
+    if (id = lastId && localX = lastX && localY = lastY) {
+        return
+    }
 
-  lastId := id
-  lastX := localX, lastY := localY
-  lastGlobalMouseX := globalMouseX, lastGlobalMouseY := globalMouseY
+    if (lastGlobalMouseX = globalMouseX && lastGlobalMouseY = globalMouseY) {
+        return
+    }
 
-  CustomToolTip(
-    "window_title     : " WinGetTitle(id) "`n"
-    "ahk_id           : " id "`n"
-    "ahk_class        : " WinGetClass(id) "`n"
-    "Control          : " control "`n"
-    "Window position  : " windowPosX ", " windowPosY "`n"
-    "Window size      : " windowWidth ", " windowHeight "`n"
-    "Local mouse pos  : " localX ", " localY "`n"
-    "Global mouse pos : " globalMouseX ", " globalMouseY "`n",
-    10, 10  ; Fixed tooltip position
-  )
+    lastId := id
+    lastX := localX, lastY := localY
+    lastGlobalMouseX := globalMouseX, lastGlobalMouseY := globalMouseY
+
+    CustomToolTip(
+        "window_title     : " WinGetTitle(id) "`n"
+        "ahk_id           : " id "`n"
+        "ahk_class        : " WinGetClass(id) "`n"
+        "Control          : " control "`n"
+        "Window position  : " windowPosX ", " windowPosY "`n"
+        "Window size      : " windowWidth ", " windowHeight ", " windowAspectRatio "`n"
+        "Local mouse pos  : " localX ", " localY "`n"
+        "Global mouse pos : " globalMouseX ", " globalMouseY "`n",
+        10, 42  ; Fixed tooltip position
+    )
 }
 
 PositionAndResize(winTitle, posX, posY, sizeX, sizeY) {
-  hwnd := WinExist(winTitle)  ; Get the window handle (HWND)
-  if !hwnd {
-    MsgBox "Error: Window not found!"
-    return
-  }
+    hwnd := WinExist(winTitle)  ; Get the window handle (HWND)
+    if !hwnd {
+        MsgBox "Error: Window not found!"
+        return
+    }
 
-  ; Move and resize the window
-  DllCall("MoveWindow", "Ptr", hwnd, "Int", posX, "Int", posY, "Int", sizeX, "Int", sizeY, "Int", true)
+    ; Move and resize the window
+    DllCall("MoveWindow", "Ptr", hwnd, "Int", posX, "Int", posY, "Int", sizeX, "Int", sizeY, "Int", true)
 }
 
 CapsLock & c:: {
-  global watchCursorEnabled
-  global tipGui
-  watchCursorEnabled := !watchCursorEnabled
-  if watchCursorEnabled {
-    SetTimer WatchCursor, 120  ; Start the timer
-  } else {
-    SetTimer WatchCursor, 0    ; Stop the timer
-    tipGui.Hide()
-  }
+    global watchCursorEnabled
+    global tipGui
+    watchCursorEnabled := !watchCursorEnabled
+    if watchCursorEnabled {
+        SetTimer WatchCursor, 120  ; Start the timer
+    } else {
+        SetTimer WatchCursor, 0    ; Stop the timer
+        tipGui.Hide()
+    }
 }
 
 CapsLock & Enter:: {
-  if WinExist("PowerShell 7") {
-    if GetKeyState("Shift", "P") {
-      WinClose("PowerShell 7")
-      loop 50 {
-        Sleep 50
-        if !WinExist("PowerShell 7") {
-          break
+    if WinExist("PowerShell 7") {
+        if GetKeyState("Shift", "P") {
+            WinClose("PowerShell 7")
+            loop 50 {
+                Sleep 50
+                if !WinExist("PowerShell 7") {
+                    break
+                }
+            }
+            Run "wt.exe"
+            loop {
+                Sleep 50
+                if WinExist("PowerShell 7") {
+                    PositionAndResize("PowerShell 7", 3682, 40, 1435, 1397)
+                    break
+                }
+            }
+        } else {
+            PositionAndResize("PowerShell 7", 3682, 40, 1435, 1397)
+            WinActivate("PowerShell 7")
         }
-      }
-      Run "wt.exe"
-      loop {
-        Sleep 50
-        if WinExist("PowerShell 7") {
-          PositionAndResize("PowerShell 7", 3546, 11, 1570, 1395)
-          break
-        }
-      }
     } else {
-      PositionAndResize("PowerShell 7", 3546, 11, 1570, 1395)
-      WinActivate("PowerShell 7")
+        Run "wt.exe"
+        loop {
+            Sleep 50
+            if WinExist("PowerShell 7") {
+                PositionAndResize("PowerShell 7", 3682, 40, 1435, 1397)
+                break
+            }
+        }
     }
-  } else {
-    Run "wt.exe"
-    loop {
-      Sleep 50
-      if WinExist("PowerShell 7") {
-        PositionAndResize("PowerShell 7", 3546, 11, 1570, 1395)
-        break
-      }
-    }
-  }
 }
 
 #Enter:: {
-  Run "wt.exe"
+    Run "wt.exe"
 }
 
 ::=dt:: ; Timestamp with =dt
 {
-  now := FormatTime(, "yyyy-MM-dd HH:mm:ss")
-  Send now
+    now := FormatTime(, "yyyy-MM-dd HH:mm:ss")
+    Send now
 }
 
 ::ccc:: ; Triple backticks block with ccc
 {
-  SendText "``````"
-  Send "{Enter 2}"
-  SendText "``````"
-  Send "{Up}"
+    SendText "``````"
+    Send "{Enter 2}"
+    SendText "``````"
+    Send "{Up}"
 }
 
 ; create 4 virtual desktops if they still don't exist
 if (GetDesktopCount() < 4) {
-  Loop 4 {
-    if (A_Index > GetDesktopCount()) {
-      MsgBox "Current desktop count: " GetDesktopCount() "`nCreating desktop " A_Index
-      CreateDesktop()
+    loop 4 {
+        if (A_Index > GetDesktopCount()) {
+            MsgBox "Current desktop count: " GetDesktopCount() "`nCreating desktop " A_Index
+            CreateDesktop()
+        }
     }
-  }
 }
 
-#1::GoToDesktopNumber(0)
-#2::GoToDesktopNumber(1)
-#3::GoToDesktopNumber(2)
-#4::GoToDesktopNumber(3)
+#1:: GoToDesktopNumber(0)
+#2:: GoToDesktopNumber(1)
+#3:: GoToDesktopNumber(2)
+#4:: GoToDesktopNumber(3)
 
-#+1::MoveWindowUnderCursorToDesktop(0)
-#+2::MoveWindowUnderCursorToDesktop(1)
-#+3::MoveWindowUnderCursorToDesktop(2)
-#+4::MoveWindowUnderCursorToDesktop(3)
+#+1:: MoveWindowUnderCursorToDesktop(0)
+#+2:: MoveWindowUnderCursorToDesktop(1)
+#+3:: MoveWindowUnderCursorToDesktop(2)
+#+4:: MoveWindowUnderCursorToDesktop(3)
+
+#9:: MakeWindow16x9ByWidth(GetWindowUnderCursor(), GetWindowWidth(GetWindowUnderCursor()))
+#0:: MakeWindow16x9ByHeight(GetWindowUnderCursor(), GetWindowHeight(GetWindowUnderCursor()))
 
 ; print desktop count with Win + 5 for testing purposes
 #5::
 {
-  count := GetDesktopCount()
-  MsgBox "Desktop count: " count
+    count := GetDesktopCount()
+    MsgBox "Desktop count: " count
 }
 
 ;; ┌─────────────────────────────────────────────────────────────────────────┐
