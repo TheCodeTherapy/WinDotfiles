@@ -96,7 +96,9 @@
                 "guid": "{111b8063-23f0-5890-a015-cb3157ae510a}",
                 "hidden": false,
                 "name": "Developer Command Prompt for VS 2022",
-                "source": "Windows.Terminal.VisualStudio",
+                // "source": "Windows.Terminal.VisualStudio",
+                "commandline": "cmd.exe /k \"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Auxiliary\\Build\\vcvars64.bat\"",
+                "startingDirectory": "%USERPROFILE%",
                 "suppressApplicationTitle": true,
                 "tabTitle": "Developer Command Prompt for VS 2022"
             },
@@ -104,7 +106,9 @@
                 "guid": "{7e274967-e5c7-529d-b1e6-0c9b6dd3d1aa}",
                 "hidden": false,
                 "name": "Developer PowerShell for VS 2022",
-                "source": "Windows.Terminal.VisualStudio",
+                // "source": "Windows.Terminal.VisualStudio",
+                "commandline": "powershell.exe -noexit -ExecutionPolicy Bypass -File \"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\Tools\\Launch-VsDevShell.ps1\"",
+                "startingDirectory": "%USERPROFILE%",
                 "suppressApplicationTitle": true,
                 "tabTitle": "Developer PowerShell for VS 2022"
             }
