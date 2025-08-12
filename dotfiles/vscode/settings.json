@@ -14,13 +14,19 @@
   "workbench.activityBar.location": "top",
   "explorer.compactFolders": false,
   "editor.minimap.enabled": false,
-  "editor.renderWhitespace": "none",
   "editor.lightbulb.enabled": "off",
   "editor.copyWithSyntaxHighlighting": false,
   "editor.semanticHighlighting.enabled": true,
   "workbench.statusBar.visible": true,
 
+  "editor.renderWhitespace": "trailing",
+  "files.trimTrailingWhitespace": true,
+
+  "debug.allowBreakpointsEverywhere": true,
+
   "workbench.colorCustomizations": {
+    "editorWhitespace.foreground": "#ff0000",
+    "editorWhitespace.background": "#ff0000",
     "editor.background": "#121217",
     "terminal.background": "#121217",
     "breadcrumb.background": "#121217ff",
