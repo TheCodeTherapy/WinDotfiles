@@ -52,6 +52,8 @@ $dotfilesTerminalSettings = Join-Path $scriptDir "dotfiles\terminal\settings.jso
 $dotfilesVSCodeSettings = Join-Path $scriptDir "dotfiles\vscode\settings.json"
 $dotfilesWinfetchSettings = Join-Path $scriptDir "dotfiles\winfetch\config.ps1"
 $dotfilesNvimConfig = Join-Path $scriptDir "dotfiles\nvim"
+$dotBashrc = Join-Path $scriptDir "dotfiles\bash\bashrc"
+$dotInputrc = Join-Path $scriptDir "dotfiles\bash\inputrc"
 
 # Define target paths ========================================================
 $ps7Profile = "$env:USERPROFILE\Documents\PowerShell\Microsoft.PowerShell_profile.ps1"
@@ -59,6 +61,8 @@ $ps5Profile = "$env:USERPROFILE\Documents\WindowsPowerShell\Microsoft.PowerShell
 $vscodeSettingsPath = "$env:APPDATA\Code\User\settings.json"
 $winfetchSettingsPath = "$env:USERPROFILE\.config\winfetch\config.ps1"
 $nvimConfigPath = "$env:LOCALAPPDATA\nvim"
+$dotBashrcTarget = "$env:USERPROFILE\.bashrc"
+$dotInputrcTarget = "$env:USERPROFILE\.inputrc"
 
 $terminalSettingsPath = Join-Path $env:LOCALAPPDATA "Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json"
 # Fallback for manually installed Windows Terminal
@@ -79,7 +83,7 @@ function New-Symlink {
     [string]$target,
     [string]$link
   )
-  
+
   # Check if link already exists and remove it if necessary
   if (Test-Path $link) {
     Write-Host "Removing existing profile at $link"
@@ -187,6 +191,9 @@ New-Symlink -target $dotfilesTerminalSettings -link $terminalSettingsPath
 New-Symlink -target $dotfilesVSCodeSettings -link $vscodeSettingsPath
 New-Symlink -target $dotfilesWinfetchSettings -link $winfetchSettingsPath
 New-Symlink -target $dotfilesNvimConfig -link $nvimConfigPath
+New-Symlink -target $dotBashrc -link $dotBashrcTarget
+New-Symlink -target $dotInputrc -link $dotInputrcTarget
+
 Write-Host "🎉 All symbolic links have been created successfully!" -ForegroundColor Green
 
 if ($isAdmin) {
