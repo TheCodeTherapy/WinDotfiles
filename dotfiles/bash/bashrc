@@ -1,0 +1,7 @@
+HISTCONTROL=ignoreboth
+shopt -s histappend
+shopt -s cmdhist
+shopt -s checkwinsize
+
+alias ll='ls -hl --color=auto'
+alias la='ls -hlA --color=auto'
