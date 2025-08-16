@@ -5,7 +5,7 @@
   "editor.fontLigatures": false,
 
   "workbench.startupEditor": "none",
-  "workbench.colorTheme": "Catppuccin Mocha",
+  "workbench.colorTheme": "One Dark Pro",
   "workbench.iconTheme": "catppuccin-mocha",
 
   "window.titleBarStyle": "native",
@@ -212,7 +212,5 @@
   ],
   "clangd.path": "C:\\Program Files\\LLVM\\bin\\clangd.exe",
   "zig.zls.enabled": "on",
-  "security.allowedUNCHosts": [
-    "wsl.localhost"
-  ]
+  "security.allowedUNCHosts": ["wsl.localhost"]
 }
