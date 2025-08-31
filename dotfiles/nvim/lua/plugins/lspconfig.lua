@@ -64,8 +64,33 @@ return {
         timeout_ms = nil,
       },
       -- LSP Server Settings
-      ---@type lspconfig.options
+      ---@type table<string, any>
       servers = {
+        ols = {
+          mason = false,
+          cmd = { "ols" },
+          filetypes = { "odin" },
+          root_dir = function(fname)
+            local util = require("lspconfig.util")
+            return util.root_pattern("odin.mod", "ols.json", ".git")(fname) or vim.fs.dirname(fname)
+          end,
+          on_attach = function(client, bufnr)
+            -- semantic tokens (Neovim 0.9 needs this; 0.10 auto-starts but this is safe)
+            if client.server_capabilities.semanticTokensProvider and vim.lsp.semantic_tokens then
+              vim.lsp.semantic_tokens.start(bufnr, client.id)
+            end
+            -- inlay hints (0.10+)
+            if vim.lsp.inlay_hint then
+              vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+            end
+          end,
+          capabilities = (function()
+            local base = vim.lsp.protocol.make_client_capabilities()
+            -- keep completion caps from cmp/blink below; we merge later too
+            return base
+          end)(),
+          settings = {}, -- keep for future OLS settings
+        },
         clangd = {
           capabilities = {
             offsetEncoding = { "utf-16" },
@@ -122,7 +147,7 @@ return {
       },
       -- you can do any additional lsp server setup here
       -- return true if you don't want this server to be setup with lspconfig
-      ---@type table<string, fun(server:string, opts:_.lspconfig.options):boolean?>
+      ---@type table<string, fun(server:string, opts:table):boolean?>
       setup = {
         -- example to setup with typescript.nvim
         -- tsserver = function(_, opts)
