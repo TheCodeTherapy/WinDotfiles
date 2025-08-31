@@ -5,9 +5,14 @@
 ###
 
 # Find out if current user identity is elevated (admin)
-$identity = [Security.Principal.WindowsIdentity]::GetCurrent()
-$principal = New-Object Security.Principal.WindowsPrincipal($identity)
-$isAdmin = $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+$shouldShowIsAdmin = $false
+$shouldShowWinFetch = $false
+
+if ($shouldShowIsAdmin) {
+  $identity = [Security.Principal.WindowsIdentity]::GetCurrent()
+  $principal = New-Object Security.Principal.WindowsPrincipal($identity)
+  $isAdmin = $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+}
 
 # Define the path to winfetch.ps1
 $winfetchPath = "$env:USERPROFILE\WinDotfiles\bin\winfetch.ps1"
@@ -21,7 +26,9 @@ if ($PSVersionTable.PSVersion.Major -ge 7) {
 Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
 Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
 
-Write-Output "isAdmin: $isAdmin"	
+if ($shouldShowIsAdmin) {
+  Write-Output "isAdmin: $isAdmin"
+}
 
 function cd... { Set-Location ..\.. }
 function cd.... { Set-Location ..\..\.. }
@@ -111,10 +118,12 @@ Set-Alias -Name su -Value admin
 Set-Alias -Name sudo -Value admin
 Set-Alias -Name dirs -Value lr
 
-if ($PSVersionTable.PSVersion.Major -ge 7) {
-  if (Test-Path $winfetchPath) {
-    # & $winfetchPath -Logo "Windows 7" -showpkgs winget,scoop,choco
-    & $winfetchPath -Logo "Windows 7"
+if ($shouldShowWinFetch) {
+  if ($PSVersionTable.PSVersion.Major -ge 7) {
+    if (Test-Path $winfetchPath) {
+      # & $winfetchPath -Logo "Windows 7" -showpkgs winget,scoop,choco
+      & $winfetchPath -Logo "Windows 7"
+    }
   }
 }
 
@@ -128,4 +137,5 @@ if (Test-Path($ChocolateyProfile)) {
   Import-Module "$ChocolateyProfile"
 }
 
-oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH/tokyo.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH/tokyo.omp.json" | Invoke-Expression
+oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH/honukai.omp.json" | Invoke-Expression
