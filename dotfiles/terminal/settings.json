@@ -12,12 +12,12 @@
             "keys": "ctrl+c"
         },
         {
-            "id": "Terminal.PasteFromClipboard",
-            "keys": "ctrl+v"
-        },
-        {
             "id": "Terminal.FindText",
             "keys": "ctrl+shift+f"
+        },
+        {
+            "id": "Terminal.PasteFromClipboard",
+            "keys": "ctrl+v"
         },
         {
             "id": "Terminal.DuplicatePaneAuto",
@@ -48,60 +48,66 @@
         "list": 
         [
             {
+                "guid": "{574e775e-4f2a-5b96-ac1e-a2962a402336}",
+                "hidden": false,
                 "name": "PowerShell 7",
-                "tabTitle": "PowerShell 7",
-                "hidden": false,
-                "suppressApplicationTitle": true,
                 "source": "Windows.Terminal.PowershellCore",
-                "guid": "{574e775e-4f2a-5b96-ac1e-a2962a402336}"
+                "suppressApplicationTitle": true,
+                "tabTitle": "PowerShell 7"
             },
             {
+                "guid": "{2ece5bfe-50ed-5f3a-ab87-5cd4baafed2b}",
+                "hidden": false,
                 "name": "Git Bash",
-                "tabTitle": "Git Bash",
-                "hidden": false,
-                "suppressApplicationTitle": true,
                 "source": "Git",
-                "guid": "{2ece5bfe-50ed-5f3a-ab87-5cd4baafed2b}"
+                "suppressApplicationTitle": true,
+                "tabTitle": "Git Bash"
             },
             {
-                "name": "Windows PowerShell",
-                "tabTitle": "Windows PowerShell",
-                "hidden": false,
-                "suppressApplicationTitle": true,
                 "commandline": "%SystemRoot%\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
-                "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}"
+                "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
+                "hidden": false,
+                "name": "Windows PowerShell",
+                "suppressApplicationTitle": true,
+                "tabTitle": "Windows PowerShell"
             },
             {
-                "name": "Command Prompt",
-                "tabTitle": "Command Prompt",
-                "hidden": false,
-                "suppressApplicationTitle": true,
                 "commandline": "%SystemRoot%\\System32\\cmd.exe",
-                "guid": "{0caa0dad-35be-5f56-a8ff-afceeeaa6101}"
+                "guid": "{0caa0dad-35be-5f56-a8ff-afceeeaa6101}",
+                "hidden": false,
+                "name": "Command Prompt",
+                "suppressApplicationTitle": true,
+                "tabTitle": "Command Prompt"
             },
             {
+                "guid": "{b453ae62-4e3d-5e58-b989-0a998ec441b8}",
+                "hidden": false,
                 "name": "Azure Cloud Shell",
-                "tabTitle": "Azure Cloud Shell",
-                "hidden": false,
-                "suppressApplicationTitle": true,
                 "source": "Windows.Terminal.Azure",
-                "guid": "{b453ae62-4e3d-5e58-b989-0a998ec441b8}"
+                "suppressApplicationTitle": true,
+                "tabTitle": "Azure Cloud Shell"
             },
             {
+                "guid": "{9bc95b49-7e46-5d6d-bbbc-e3fd6774d1e9}",
+                "hidden": false,
                 "name": "Developer Command Prompt for VS 2022",
-                "tabTitle": "Developer Command Prompt for VS 2022",
-                "hidden": false,
-                "suppressApplicationTitle": true,
                 "source": "Windows.Terminal.VisualStudio",
-                "guid": "{ba744ac8-acb1-5187-bf8f-d512f02acc1c}"
+                "suppressApplicationTitle": true,
+                "tabTitle": "Developer Command Prompt for VS 2022"
             },
             {
-                "name": "Developer PowerShell for VS 2022",
-                "tabTitle": "Developer PowerShell for VS 2022",
+                "guid": "{7076e901-23a0-5cc5-a3dd-99c7827a800c}",
                 "hidden": false,
-                "suppressApplicationTitle": true,
+                "name": "Developer PowerShell for VS 2022",
                 "source": "Windows.Terminal.VisualStudio",
-                "guid": "{2e13bb9d-69f5-5500-9324-226aa12a6abf}"
+                "suppressApplicationTitle": true,
+                "tabTitle": "Developer PowerShell for VS 2022"
+            },
+            {
+                "guid": "{fbbf1774-39f0-5025-ada1-50be3550dd54}",
+                "hidden": false,
+                "name": "Ubuntu",
+                "source": "Microsoft.WSL"
             }
         ]
     },
