@@ -56,6 +56,7 @@ $dotBashrc = Join-Path $scriptDir "dotfiles\bash\bashrc"
 $dotInputrc = Join-Path $scriptDir "dotfiles\bash\inputrc"
 
 # Define target paths ========================================================
+New-Item -ItemType Directory -Path "$env:USERPROFILE\.config\winfetch" -Force
 $ps7Profile = "$env:USERPROFILE\Documents\PowerShell\Microsoft.PowerShell_profile.ps1"
 $ps5Profile = "$env:USERPROFILE\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1"
 $vscodeSettingsPath = "$env:APPDATA\Code\User\settings.json"
