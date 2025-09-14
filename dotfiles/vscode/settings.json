@@ -105,5 +105,8 @@
   "clangd.path": "C:\\Program Files\\LLVM\\bin\\clangd.exe",
   "glsllint.glslangValidatorPath": "C:\\tools\\glslang\\bin\\glslangValidator.exe",
   "zig.zls.enabled": "on",
-  "security.allowedUNCHosts": ["wsl.localhost"]
+  "security.allowedUNCHosts": [
+    "wsl.localhost"
+  ],
+  "workbench.iconTheme": "catppuccin-mocha"
 }
